@@ -1,0 +1,3 @@
+[submodule "3rdparty/Godot-PerfBullets"]
+	path = 3rdparty/Godot-PerfBullets
+	url = https://github.com/Moonzel/Godot-PerfBullets.git
