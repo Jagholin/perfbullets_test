@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://ddlgultdk7lkg"]
+
+[ext_resource type="Shader" path="res://resources/shaders/color_rect_with_cutout.gdshader" id="1_1xijq"]
+[ext_resource type="Script" path="res://scripts/color_rect_with_cutout.gd" id="2_dvstg"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oblj7"]
+shader = ExtResource("1_1xijq")
+shader_parameter/hole_position = null
+shader_parameter/hole_size = null
+
+[node name="ColorRectWithCutout" type="ColorRect"]
+material = SubResource("ShaderMaterial_oblj7")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_dvstg")

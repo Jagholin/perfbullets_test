@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://dli4f4asewf1h"]
+
+[ext_resource type="Script" path="res://scripts/main_window.gd" id="1_raum8"]
+[ext_resource type="PackedScene" uid="uid://ddlgultdk7lkg" path="res://scenes/color_rect_with_cutout.tscn" id="2_f1l56"]
+
+[node name="MainWindow" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_raum8")
+
+[node name="ColorRectWithCutout" parent="." instance=ExtResource("2_f1l56")]
+layout_mode = 1
+
+[node name="TestRect" type="ColorRect" parent="ColorRectWithCutout"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0, 0.743162, 0.745038, 1)
+
+[connection signal="item_rect_changed" from="." to="." method="_on_item_rect_changed"]

@@ -18,13 +18,13 @@ func _unhandled_input(_event):
 func _process(delta):
 	if Input.is_action_pressed("forward"):
 		position.y -= normal_speed * delta
-		#position.y = max(available_space.position.y, position.y)
+		position.y = max(available_space.position.y, position.y)
 	elif Input.is_action_pressed("backward"):
 		position.y += normal_speed * delta
-		#position.y = min(available_space.end.y, position.y)
+		position.y = min(available_space.end.y, position.y)
 	if Input.is_action_pressed("left"):
 		position.x -= normal_speed * delta
-		#position.x = max(available_space.position.x, position.x)
+		position.x = max(available_space.position.x, position.x)
 	elif Input.is_action_pressed("right"):
 		position.x += normal_speed * delta
-		#position.x = min(available_space.end.x, position.x)
+		position.x = min(available_space.end.x, position.x)

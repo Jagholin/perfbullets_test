@@ -1,10 +1,19 @@
-[gd_scene load_steps=9 format=3 uid="uid://qygichkmxmpj"]
+[gd_scene load_steps=13 format=3 uid="uid://qygichkmxmpj"]
 
+[ext_resource type="Script" path="res://scripts/game_field.gd" id="1_iwhey"]
 [ext_resource type="Texture2D" uid="uid://bssk30e68rgyc" path="res://assets/images/bullet16.png" id="1_m4whn"]
 [ext_resource type="PackedScene" uid="uid://d2q44phdg32i" path="res://scenes/character.tscn" id="2_vnf51"]
 [ext_resource type="Script" path="res://addons/PerfBullets/GDScript_Classes/BulletBorder.gd" id="3_aa4b6"]
 [ext_resource type="Script" path="res://addons/PerfBullets/GDScript_Classes/PatternManager.gd" id="4_mc7yw"]
 [ext_resource type="Script" path="res://addons/PerfBullets/GDScript_Classes/PatternSpawnerData.gd" id="5_8evc8"]
+[ext_resource type="Texture2D" uid="uid://f58pv4wpn3x5" path="res://assets/images/bullet8.png" id="5_464eg"]
+[ext_resource type="PackedScene" uid="uid://dli4f4asewf1h" path="res://scenes/main_window.tscn" id="8_mmsvb"]
+
+[sub_resource type="Resource" id="Resource_uyorf"]
+script = ExtResource("5_8evc8")
+ID = 1
+time = 5.0
+timerMode = 0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5v21n"]
 radius = 4.0
@@ -15,16 +24,19 @@ _shape = SubResource("CircleShape2D_5v21n")
 acceleration = 500.0
 maxLifetime = 100.0
 
-[sub_resource type="Resource" id="Resource_uyorf"]
-script = ExtResource("5_8evc8")
-ID = 1
-time = 5.0
-timerMode = 0
+[sub_resource type="LabelSettings" id="LabelSettings_xtfgd"]
+font_color = Color(0, 0, 0, 1)
 
 [node name="GameField" type="Node2D"]
+script = ExtResource("1_iwhey")
 
-[node name="Spawner" type="Spawner" parent="."]
-startMode = 1
+[node name="GameObjects" type="Node2D" parent="."]
+
+[node name="PatternManager" type="Node" parent="GameObjects"]
+script = ExtResource("4_mc7yw")
+data = Array[ExtResource("5_8evc8")]([SubResource("Resource_uyorf")])
+
+[node name="Spawner" type="Spawner" parent="GameObjects"]
 bulletType = SubResource("BulletType_xxxhq")
 fireRate = 0.5
 bulletsPerRadius = 5
@@ -35,19 +47,44 @@ spinAcceleration = 5.0
 position = Vector2(232, 144)
 texture = ExtResource("1_m4whn")
 
-[node name="Character" parent="." instance=ExtResource("2_vnf51")]
+[node name="Character" parent="GameObjects" instance=ExtResource("2_vnf51")]
+unique_name_in_owner = true
 position = Vector2(236, 404)
 normal_speed = 120.0
 
-[node name="BulletBorder" type="Node2D" parent="."]
+[node name="BulletBorder" type="Node2D" parent="GameObjects" node_paths=PackedStringArray("topLeft", "bottomRight")]
+unique_name_in_owner = true
 script = ExtResource("3_aa4b6")
+topLeft = NodePath("TopLeft")
+bottomRight = NodePath("BottomRight")
 
-[node name="TopLeft" type="Node2D" parent="BulletBorder"]
+[node name="TopLeft" type="Node2D" parent="GameObjects/BulletBorder"]
 position = Vector2(-23, -25)
 
-[node name="BottomRight" type="Node2D" parent="BulletBorder"]
+[node name="Sprite2D" type="Sprite2D" parent="GameObjects/BulletBorder/TopLeft"]
+texture = ExtResource("5_464eg")
+
+[node name="BottomRight" type="Node2D" parent="GameObjects/BulletBorder"]
+unique_name_in_owner = true
 position = Vector2(655, 673)
 
-[node name="PatternManager" type="Node" parent="."]
-script = ExtResource("4_mc7yw")
-data = Array[ExtResource("5_8evc8")]([SubResource("Resource_uyorf")])
+[node name="Sprite2D" type="Sprite2D" parent="GameObjects/BulletBorder/BottomRight"]
+texture = ExtResource("5_464eg")
+
+[node name="HUDLayer" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="HUDLayer" instance=ExtResource("8_mmsvb")]
+unique_name_in_owner = true
+view_width = 500.0
+top_bottom_margin = 15.0
+
+[node name="StatsLabel" type="Label" parent="HUDLayer/HUD"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 19.0
+offset_top = 21.0
+offset_right = 239.0
+offset_bottom = 189.0
+label_settings = SubResource("LabelSettings_xtfgd")
+
+[connection signal="window_changed" from="HUDLayer/HUD" to="." method="set_field_size"]
